@@ -11,7 +11,7 @@ public class AESEncryption {
  
     private static SecretKeySpec sKey;
     private static byte[] key;
-    public static boolean enableEncryption = true; // decides if AES encryption should be enabled in communication channel
+    public static boolean enableEncryption = false; // decides if AES encryption should be enabled in communication channel
  
     // Generates an AES Key
     public static void genKey(String myKey) 

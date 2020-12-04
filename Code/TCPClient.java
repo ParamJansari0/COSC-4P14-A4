@@ -18,27 +18,41 @@ public class TCPClient {
       BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
       BufferedReader termIn = new BufferedReader(new InputStreamReader(System.in));
       System.out.println("Connection Established!");
+      String encryptionEnabledText = AESEncryption.enableEncryption ? "AES Encryption Enabled" : "No Encryption";
+      System.out.println(encryptionEnabledText);
       String userInput;
 
+      
       // Talk to server
       while ((userInput = termIn.readLine()) != null ){
-
+        
         String serverResponse = "bye";
-
         // processes input/output differently based on if encryption is enabled
         if(AESEncryption.enableEncryption){ 
+          long start = System.currentTimeMillis(); // start timer
           // will encrypt communication channel with AES encryption
           String encryptedUserInput = AESEncryption.encryptMessage(userInput, password);
           out.println(encryptedUserInput);
           String encryptedServerResponse = in.readLine();
           serverResponse = AESEncryption.decryptMessage(encryptedServerResponse, password);
           System.out.println("Server: " + serverResponse); //Server response  
+          // end timer
+          long finish = System.currentTimeMillis();
+          long timeElapsed = finish - start;
+          //output time till response
+          System.out.println("Time Elased: " + timeElapsed);
         }else{
+          long start = System.currentTimeMillis(); // start timer
           out.println(userInput);
           serverResponse = in.readLine();
           System.out.println("Server: " + serverResponse); //Server response
+          // end timer
+          long finish = System.currentTimeMillis();
+          long timeElapsed = finish - start;
+          //output time till response
+          System.out.println("Time Elased: " + timeElapsed);
         }
-
+        
         //breaks when server replies with "bye"
         if(serverResponse.equals("bye")){
           out.close();
